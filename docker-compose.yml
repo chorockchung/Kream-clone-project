@@ -1,0 +1,31 @@
+
+services:
+  # ----------------------------------------------------
+  # 1. MySQL 컨테이너 설정 (메인 관계형 데이터베이스)
+  # ----------------------------------------------------
+  kream-mysql:
+    image: mysql:8.0
+    container_name: kream-mysql-container
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "dontmiss11"
+      MYSQL_DATABASE: kream
+      MYSQL_ROOT_HOST: '%'
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  # ----------------------------------------------------
+  # 2. Redis 컨테이너 설정 (동시성 제어용 분산 락 & 캐시)
+  # ----------------------------------------------------
+  kream-redis:
+    image: redis:7.0-alpine
+    container_name: kream-redis-container
+    ports:
+     - "6379:6379"
+
+# ----------------------------------------------------
+# 3. 데이터 백업 공간(Volume) 정의
+# ----------------------------------------------------
+volumes:
+  mysql_data:
