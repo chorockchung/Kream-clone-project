@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.config.DummyDataInitializer;
 import org.example.domain.Product;
 import org.example.domain.ProductSize;
 import org.example.repository.ProductRepository;
@@ -7,12 +8,14 @@ import org.example.repository.ProductSizeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Import(DummyDataInitializer.class) // 👈 이 설정을 추가해주세요!
 class ProductPriceCachePerformanceTest {
 
     @Autowired private ProductPriceService productPriceService;

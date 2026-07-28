@@ -14,8 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-//@Disabled("최초 1회 시딩용 - 재실행 시 데이터 중복 누적됨")
-//@ActiveProfiles("test") // application-test.yml 설정 사용
+@Disabled("최초 1회 시딩용 - 재실행 시 데이터 중복 누적됨")
 @Import(DummyDataInitializer.class) // 👈 이 설정을 추가해주세요!
 class DummyDataInitializerTest {
 
