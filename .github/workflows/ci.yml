@@ -53,8 +53,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: 테스트 실행
-        run: mvn -B test
+      - name: 테스트 빌드
+        run: mvn -B package
         env:
           MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
 
