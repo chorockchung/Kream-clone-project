@@ -33,9 +33,9 @@ public class DummyDataInitializer implements CommandLineRunner {
     public void run(String... args) {
         Faker faker = new Faker(new Locale("ko"));
 
-        // 1. 유저 생성 (100명)
+        // 1. 유저 생성 (100명) //테스트 : 10명 으로 수정
         List<User> users = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             users.add(User.builder()
                     .name(faker.name().fullName())
                     .email(faker.internet().emailAddress())
@@ -44,9 +44,9 @@ public class DummyDataInitializer implements CommandLineRunner {
         }
         users = userRepository.saveAll(users);
 
-        // 2. 상품 생성 (총 20개 - 0번 상품을 '인기 상품'으로 지정)
+        // 2. 상품 생성 (총 20개 - 0번 상품을 '인기 상품'으로 지정) //테스트 : 5명으로 수정
         List<Product> products = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 5; i++) {
             String prefix = (i == 0) ? "[🔥HOT] " : "";
             products.add(Product.builder()
                     .name(prefix + faker.commerce().productName())
@@ -111,12 +111,12 @@ public class DummyDataInitializer implements CommandLineRunner {
         List<Trade> tradesToSave = new ArrayList<>();
 
         // 5-A. 인기 상품: 20,000건의 Trade 및 Bid 매칭 처리
-        System.out.println("🔥 인기 상품 대량 Trade 시딩 & Bid MATCHED 처리 시작 (20,000건)...");
-        generateTradesAndMatchBids(tradesToSave, hotSizes, users, 20_000, 250_000, waitingBuyBidsMap, waitingSellBidsMap);
+        System.out.println("🔥 인기 상품 대량 Trade 시딩 & Bid MATCHED 처리 시작 (30건)...");
+        generateTradesAndMatchBids(tradesToSave, hotSizes, users, 30, 250_000, waitingBuyBidsMap, waitingSellBidsMap); //테스트 : totalCount 20000 -> 30
 
         // 5-B. 일반 상품: ~2,000건 Trade 및 Bid 매칭 처리
-        System.out.println("📦 일반 상품 Trade 시딩 & Bid MATCHED 처리 시작 (2,000건)...");
-        generateTradesAndMatchBids(tradesToSave, normalSizes, users, 2_000, 150_000, waitingBuyBidsMap, waitingSellBidsMap);
+        System.out.println("📦 일반 상품 Trade 시딩 & Bid MATCHED 처리 시작 (30건)...");
+        generateTradesAndMatchBids(tradesToSave, normalSizes, users, 30, 150_000, waitingBuyBidsMap, waitingSellBidsMap); //테스트 : totalCount 2000 -> 30
 
         // MATCHED로 변경된 Bid 상태들을 DB에 일괄 저장
         bidRepository.saveAll(savedBids);
@@ -131,7 +131,8 @@ public class DummyDataInitializer implements CommandLineRunner {
     private void createBidsForSize(List<Bid> bidsToSave, ProductSize productSize, List<User> users,
                                    int basePrice, BidType type, double minRatio, double maxRatio) {
         // Trade 횟수 대비 매칭시킬 Bid가 부족하지 않도록 넉넉히 생성 (개당 150~200건)
-        int count = 150 + random.nextInt(50);
+//        int count = 150 + random.nextInt(50);
+        int count = 3 + random.nextInt(3); // 150~200 → 3~5건
         for (int i = 0; i < count; i++) {
             User user = users.get(random.nextInt(users.size()));
             bidsToSave.add(Bid.builder()
