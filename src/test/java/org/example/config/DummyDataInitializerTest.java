@@ -4,6 +4,7 @@ import org.example.domain.BidStatus;
 import org.example.repository.*;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,10 +12,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.shaded.org.bouncycastle.jcajce.provider.symmetric.SEED;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Tag("seeding")
 //@Disabled("최초 1회 시딩용 - 재실행 시 데이터 중복 누적됨")
 @Import(DummyDataInitializer.class) // 👈 이 설정을 추가해주세요!
 class DummyDataInitializerTest {
