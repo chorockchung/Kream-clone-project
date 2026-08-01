@@ -5,6 +5,7 @@ import org.example.domain.Product;
 import org.example.domain.ProductSize;
 import org.example.repository.ProductRepository;
 import org.example.repository.ProductSizeRepository;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,8 +16,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("performance")   // CI에서 제외
 @SpringBootTest
-@Profile("seed")   // 이 프로필이 켜졌을 때만 CommandLineRunner로 동작
 @Import(DummyDataInitializer.class) // 👈 이 설정을 추가해주세요!
 class ProductPriceCachePerformanceTest {
 
