@@ -1,16 +1,14 @@
 package org.example.config;
 
+import org.assertj.core.api.Assertions;
 import org.example.domain.BidStatus;
 import org.example.repository.*;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
-import org.testcontainers.shaded.org.bouncycastle.jcajce.provider.symmetric.SEED;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
