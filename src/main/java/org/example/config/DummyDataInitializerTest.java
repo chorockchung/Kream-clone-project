@@ -9,9 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.shaded.org.bouncycastle.jcajce.provider.symmetric.SEED;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -69,9 +67,9 @@ class DummyDataInitializerTest {
 //        assertThat(tradeCount).isGreaterThanOrEqualTo(22000);
 //        assertThat(matchedBidCount).isGreaterThan(0);
         // 검증은 "0건보다는 많다" 정도로 느슨하게 (시딩 규모가 바뀌어도 안 깨지도록)
-        assertThat(userCount).isGreaterThan(0);
-        assertThat(productCount).isGreaterThan(0);
-        assertThat(tradeCount).isGreaterThan(0);
+        Assertions.assertThat(userCount).isGreaterThan(0);
+        Assertions.assertThat(productCount).isGreaterThan(0);
+        Assertions.assertThat(tradeCount).isGreaterThan(0);
 
     }
 }
