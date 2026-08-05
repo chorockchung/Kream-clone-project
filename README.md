@@ -9,8 +9,8 @@
 
 ## 데모
 
-- Swagger UI: `http://{EC2_퍼블릭_IP}:8080/swagger-ui/index.html`
-- Health Check: `http://{EC2_퍼블릭_IP}:8080/actuator/health`
+- Swagger UI: `http://3.35.3.95:8080/swagger-ui/index.html`
+- Health Check: `http://3.35.3.95:8080/actuator/health`
 
 > ⚠️ 비용 관리를 위해 인스턴스를 상시 가동하지 않습니다. 시연이 필요하시면 언제든 요청해주세요.
 
