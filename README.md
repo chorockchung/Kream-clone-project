@@ -260,15 +260,7 @@ NpipeSocketClientProviderStrategy: failed with exception BadRequestException (St
 
 **해결**: 보안 그룹의 22번 포트 소스를 `0.0.0.0/0`으로 변경 (실제 로그인은 `.pem` 키가 있어야만 가능하므로 이 방식을 채택).
 
-### 7. `docker-compose.yml`의 YAML 구조 오류
-
-**증상**: `mapping key "volumes" already defined`, 이후 `volumes.app additional properties ... not allowed`
-
-**원인**: 여러 차례 편집하며 최상위 `volumes:` 키가 중복 정의되었고, 이후 `app` 서비스 정의가 `services:`가 아닌 `volumes:` 블록 아래로 잘못 들여쓰기 되어 있었다.
-
-**해결**: 부분 수정 대신 `heredoc`으로 파일 전체를 새로 작성해 구조를 명확히 하고, `docker compose config`로 문법을 사전 검증하는 방식을 채택.
-
-### 8. `t2.micro` 리소스 한계 — 메모리 및 디스크 부족
+### 7. `t3.micro` 리소스 한계 — 메모리 및 디스크 부족
 
 **증상**: 컨테이너가 뜬 뒤 서버 응답이 급격히 느려지거나, 재배포 시 `no space left on device` 발생.
 
@@ -277,21 +269,13 @@ NpipeSocketClientProviderStrategy: failed with exception BadRequestException (St
 - **디스크**: 여러 차례 재배포로 Docker 이미지 레이어와 빌드 캐시가 누적되며 8GB 볼륨이 100% 소진
 
 **해결**
-- 스왑 파일 추가로 메모리 여유 확보
+- 스왑 파일 추가 및 메모리 크기 8GB -> 32GB로 올림
 
-```bash
-sudo fallocate -l 1G /swapfile
-sudo chmod 600 /swapfile
-sudo mkswap /swapfile
-sudo swapon /swapfile
-echo '/swapfile swap swap defaults 0 0' | sudo tee -a /etc/fstab
-```
-
-- `docker system prune -a --volumes`로 정리하고, `deploy` job 스크립트에 배포 후 자동 정리 단계(`docker image prune -af`, `docker builder prune -af`)를 포함시켜 재발 방지
+- `docker system prune -a --volumes`로 정리
 
 **배운 점**: 프리티어 인스턴스로 멀티 컨테이너 서비스를 운영할 때는, 기능 구현만큼이나 리소스 관리 자동화가 안정적인 운영에 실질적으로 더 중요하다는 것을 체감했다.
 
-### 9. 벤치마크/시딩용 테스트가 CI를 계속 실패시킴
+### 8. 벤치마크/시딩용 테스트가 CI를 계속 실패시킴
 
 **증상**: 로컬에서는 통과하던 `ProductPriceCachePerformanceTest`, `DummyDataInitializerTest`가 CI에서만 `NoSuchElementException`으로 실패.
 
@@ -307,7 +291,7 @@ echo '/swapfile swap swap defaults 0 0' | sudo tee -a /etc/fstab
 <excludedGroups>performance,seeding</excludedGroups>
 ```
 
-### 10. `main`이 `test` 코드를 참조하려는 구조적 오류
+### 9. `main`이 `test` 코드를 참조하려는 구조적 오류
 
 **증상**: 배포 환경에서도 필요할 때 더미데이터를 시딩할 수 있도록 `Main.java`에 `@Profile("seed")`로 `DummyDataInitializer`를 등록하려 했는데, import 자체가 인식되지 않음.
 
@@ -334,8 +318,3 @@ echo '/swapfile swap swap defaults 0 0' | sudo tee -a /etc/fstab
 - DummyDataInitializerTest: 더미 데이터 시딩 (로컬/필요시 전용, CI 제외)
 ```
 
-## 앞으로 진행할 것
-
-- [ ] k6를 이용한 API 레벨 부하 테스트
-- [ ] JaCoCo 코드 커버리지 측정 도입
-- [ ] 브랜치 보호 규칙으로 CI 통과를 머지 필수 조건화
